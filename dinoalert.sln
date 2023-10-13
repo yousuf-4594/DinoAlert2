@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dino_alert", "dinoalert\dinoalert.vcxproj", "{039627DC-D237-4967-8BA3-F224280049DE}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Dino Alert installer", "Dino Alert installer\Dino Alert installer.vdproj", "{791A4925-46C2-44F4-A7CE-43F3FEEA1262}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{039627DC-D237-4967-8BA3-F224280049DE}.Debug|x64.ActiveCfg = Debug|x64
+		{039627DC-D237-4967-8BA3-F224280049DE}.Debug|x64.Build.0 = Debug|x64
+		{039627DC-D237-4967-8BA3-F224280049DE}.Debug|x86.ActiveCfg = Debug|Win32
+		{039627DC-D237-4967-8BA3-F224280049DE}.Debug|x86.Build.0 = Debug|Win32
+		{039627DC-D237-4967-8BA3-F224280049DE}.Release|x64.ActiveCfg = Release|x64
+		{039627DC-D237-4967-8BA3-F224280049DE}.Release|x64.Build.0 = Release|x64
+		{039627DC-D237-4967-8BA3-F224280049DE}.Release|x86.ActiveCfg = Release|Win32
+		{039627DC-D237-4967-8BA3-F224280049DE}.Release|x86.Build.0 = Release|Win32
+		{791A4925-46C2-44F4-A7CE-43F3FEEA1262}.Debug|x64.ActiveCfg = Debug
+		{791A4925-46C2-44F4-A7CE-43F3FEEA1262}.Debug|x86.ActiveCfg = Debug
+		{791A4925-46C2-44F4-A7CE-43F3FEEA1262}.Release|x64.ActiveCfg = Release
+		{791A4925-46C2-44F4-A7CE-43F3FEEA1262}.Release|x86.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD57C69E-8A3D-4B97-95F9-61D8E66870FC}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,10 @@
+player :arhum			|score:88
+player :ali			|score:69
+player :ali			|score:69
+player :jhjhkj			|score:0
+player :vfdvs			|score:0
+player :sd			|score:10
+player :hahahahah		|score:10
+player :hello			|score:10
+player :							|score:10
+player :yousuf			|score:2
