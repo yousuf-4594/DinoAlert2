@@ -149,19 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cameramovement.cpp" />
-    <ClCompile Include="collision detection.cpp" />
-    <ClCompile Include="dinoalert.cpp" />
-    <ClCompile Include="enemygraphics.cpp" />
     <ClCompile Include="enemysprite_and_turretmov.cpp" />
-    <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="highscore.cpp" />
-    <ClCompile Include="newcoolshootingmech.cpp" />
-    <ClCompile Include="populatingenemy.cpp" />
-    <ClCompile Include="shooting.cpp" />
-    <ClCompile Include="steer.cpp" />
-    <ClCompile Include="turretgraphics.cpp" />
-    <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

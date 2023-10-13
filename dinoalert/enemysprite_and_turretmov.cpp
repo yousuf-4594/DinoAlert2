@@ -17,10 +17,6 @@ void hyp(float* a, float* b) {
 
 
 
-
-
-
-
 class Bullet{
     static int addon[4];
     Vector2 coord;
@@ -937,7 +933,7 @@ public:
     
     void displaydead() {
         Texture2D enemysprite;
-        enemysprite = LoadTexture("./enemysprite.png");
+        enemysprite = LoadTexture("./Assets/enemysprite.png");
 
         count[12]++;
         if (count[12] < 10)
@@ -968,11 +964,11 @@ int ENEMY::enemycount;
 class SCREENMODE {
     int screenmode = 0;
 
-    Texture2D mainmenu = LoadTexture("./intro.png");
-    Texture2D options = LoadTexture("./mainmenuoptions.png");
-    Texture2D option_menu = LoadTexture("./option_menu.png");
-    Texture2D score_menu = LoadTexture("./scoreboard.png");
-    Texture2D gameover = LoadTexture("./gameover.png");
+    Texture2D mainmenu = LoadTexture("./Assets/intro.png");
+    Texture2D options = LoadTexture("./Assets/mainmenuoptions.png");
+    Texture2D option_menu = LoadTexture("./Assets/option_menu.png");
+    Texture2D score_menu = LoadTexture("./Assets/scoreboard.png");
+    Texture2D gameover = LoadTexture("./Assets/gameover.png");
 
 
 
@@ -1698,12 +1694,12 @@ int main() {
     
     //----------------------------------------------------------------   TEXTURES   ---------------------------------------
     Texture2D textures,player_car,enemysprite,intro,hud,bg;
-    textures = LoadTexture("./A.png");
-    player_car = LoadTexture("./car.png");
-    enemysprite = LoadTexture("./enemysprite.png");
-    intro = LoadTexture("./intro.png");
-    hud = LoadTexture("./hud.png");
-    bg = LoadTexture("./background.png");
+    textures = LoadTexture("./Assets/A.png");
+    player_car = LoadTexture("./Assets/car.png");
+    enemysprite = LoadTexture("./Assets/enemysprite.png");
+    intro = LoadTexture("./Assets/intro.png");
+    hud = LoadTexture("./Assets/hud.png");
+    bg = LoadTexture("./Assets/background.png");
 
     //---------------------------------------------------------------------------------------------------------------------
 
