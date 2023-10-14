@@ -1,0 +1,57 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 3
+        },
+        "#A": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.03125,
+            "scaleInEditor": 0.33
+        },
+        "#abc": {
+            "scaleInDock": 2
+        },
+        "A.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.015625,
+            "scaleInEditor": 0.015625
+        },
+        "abc.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 2,
+            "scaleInEditor": 1
+        }
+    },
+    "last.externalTilesetPath": "D:/Creations/PDCProj/MapEditor",
+    "last.imagePath": "D:/Creations/PDCProj/dinoalert/Assets",
+    "map.height": 500,
+    "map.orientation": null,
+    "map.renderOrder": null,
+    "map.tileHeight": 32,
+    "map.tileWidth": 64,
+    "map.width": 500,
+    "openFiles": [
+        "abc.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "abc.tsx",
+        "A.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 64
+    },
+    "tileset.type": 0
+}
