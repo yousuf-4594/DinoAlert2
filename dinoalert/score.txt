@@ -9,3 +9,6 @@ player :hello			|score:10
 player :							|score:10
 player :yousuf			|score:2
 player :dsafdsf			|score:30
+player :dsfdsa			|score:32
+player :dsaf			|score:0
+player :dsafdsa			|score:30

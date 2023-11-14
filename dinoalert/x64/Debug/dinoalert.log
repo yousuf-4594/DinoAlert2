@@ -1,32 +1,37 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(514,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (dinoalert.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿  Bullet.cpp
+D:\Creations\PDCProj\dinoalert\Bullet.cpp(63,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Enemy.cpp
   main.cpp
-D:\Creations\PDCProj\dinoalert\main.cpp(72,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(495,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(540,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(540,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1358,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1359,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1411,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1411,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1461,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1462,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1480,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1481,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1590,24): warning C4305: '+=': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(1630,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1630,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1633,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1633,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1639,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(1639,32): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(1640,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(1705,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1706,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(1711,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(472): warning C4715: 'PLAYER::playeralive': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\main.cpp(566): warning C4715: 'TURRET::displayturret': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\main.cpp(870): warning C4715: 'ENEMY::displayenemy': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\main.cpp(405): warning C4715: 'PLAYER::displayplayer': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\main.cpp(538): warning C4715: 'TURRET::calculateangle': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\main.cpp(726): warning C4715: 'ENEMY::calculateangle': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\main.cpp(79,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(80,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(132,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(132,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(182,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(183,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(201,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(202,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(311,24): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Creations\PDCProj\dinoalert\main.cpp(349,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(349,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(352,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(352,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(358,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\PDCProj\dinoalert\main.cpp(358,32): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\PDCProj\dinoalert\main.cpp(359,27): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\PDCProj\dinoalert\main.cpp(424,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(425,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\main.cpp(430,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Player.cpp
+D:\Creations\PDCProj\dinoalert\Player.cpp(249,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Creations\PDCProj\dinoalert\Player.cpp(300,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Creations\PDCProj\dinoalert\Player.cpp(300,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Powerups.cpp
+  ScreenMode.cpp
+  Generating Code...
+D:\Creations\PDCProj\dinoalert\Player.cpp(326): warning C4715: 'TURRET::displayturret': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\Player.cpp(244): warning C4715: 'PLAYER::playeralive': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\Player.cpp(297): warning C4715: 'TURRET::calculateangle': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\Player.cpp(176): warning C4715: 'PLAYER::displayplayer': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\Enemy.cpp(119): warning C4715: 'ENEMY::calculateangle': not all control paths return a value
+D:\Creations\PDCProj\dinoalert\Enemy.cpp(262): warning C4715: 'ENEMY::displayenemy': not all control paths return a value
   dinoalert.vcxproj -> D:\Creations\PDCProj\x64\Debug\dino_alert.exe
