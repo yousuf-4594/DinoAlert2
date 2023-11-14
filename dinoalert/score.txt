@@ -12,3 +12,15 @@ player :dsafdsf			|score:30
 player :dsfdsa			|score:32
 player :dsaf			|score:0
 player :dsafdsa			|score:30
+player :dsaf			|score:0
+player :dsafds			|score:30
+player :dsafsa			|score:3
+player :daf			|score:0
+player :dafds			|score:0
+player :dsfds			|score:0
+player :dafdsa			|score:0
+player :dafs			|score:0
+player :adsaf			|score:0
+player :dsfdsf			|score:0
+player :afsaf			|score:0
+player :ghf			|score:0

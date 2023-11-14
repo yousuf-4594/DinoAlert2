@@ -31,11 +31,11 @@
             "scaleInEditor": 3
         },
         "mapProj.tmx": {
-            "scale": 0.33,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2475.757575757576,
-                "y": 1712.1212121212122
+                "x": 2374,
+                "y": 261.33333333333326
             }
         }
     },

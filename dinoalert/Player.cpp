@@ -218,14 +218,14 @@ void PLAYER::offsets(float* offsetx, float* offsety) {
 }
 
 void PLAYER::displaylife(Texture2D lifesprite) {
-    int i, gap = 170;
+    int i, gap = 220;
     for (i = 0; i <= 20; i++) {
-        DrawTextureRec(lifesprite, Rectangle{ 378,656,21,41 }, Vector2{ (float)gap , 736.00 }, WHITE);
+        DrawTextureRec(lifesprite, Rectangle{ 378,656,21,41 }, Vector2{ (float)gap , 709.00 }, WHITE);
         gap += 23;
     }
-    gap = 170;
+    gap = 220;
     for (i = 0; i <= playerlife / 10; i++) {
-        DrawTextureRec(lifesprite, life, Vector2{ (float)gap , 724.00 }, WHITE);
+        DrawTextureRec(lifesprite, life, Vector2{ (float)gap , 697.00 }, WHITE);
         gap += 23;
     }
     // Get current screen width
@@ -233,7 +233,7 @@ void PLAYER::displaylife(Texture2D lifesprite) {
 }
 
 void PLAYER::display_score() {
-    DrawText(TextFormat("kill count : %i ", score), 1100, 734, 10, ORANGE);
+    DrawText(TextFormat("kill count : %i ", score), 1100, 700, 15, ORANGE);
 }
 
 bool PLAYER::playeralive() {

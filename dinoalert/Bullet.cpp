@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int Bullet::range = 200;
+int Bullet::range = 2000;
 int Bullet::firerate = 11;
 int Bullet::gun = 1;
 float Bullet::maxSpeed = 15;
@@ -81,31 +81,31 @@ void Bullet::setguntype(int a) {
     gun = a;
     if (gun == 1) {
         maxSpeed = 15.0;
-        range = 200;
+        range = 2000;
         firerate = 11;
         ammo = 1000;
     }
     if (gun == 2) {
         maxSpeed = 15.0;
-        range = 200;
+        range = 2000;
         firerate = 3;
         ammo = 200 + addon[1];
     }
     if (gun == 3) {
         maxSpeed = 30.0;
-        range = 500;
+        range = 5000;
         firerate = 22;
         ammo = 20 + addon[2];
     }
     if (gun == 4) {
         maxSpeed = 50.0;
-        range = 400;
+        range = 4000;
         firerate = 60;
         ammo = 5 + addon[3];
     }
     if (gun == 5) {
         maxSpeed = 50.0;
-        range = 800;
+        range = 8000;
         firerate = 1;
         ammo = 1000;
     }

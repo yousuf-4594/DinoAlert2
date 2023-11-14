@@ -1,37 +1,4 @@
-﻿  Bullet.cpp
-D:\Creations\PDCProj\dinoalert\Bullet.cpp(63,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Enemy.cpp
-  main.cpp
-D:\Creations\PDCProj\dinoalert\main.cpp(79,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(80,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(132,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(132,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(182,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(183,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(201,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(202,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(311,24): warning C4305: '+=': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(349,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(349,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(352,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(352,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(358,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(358,32): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(359,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\PDCProj\dinoalert\main.cpp(424,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(425,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\main.cpp(430,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Player.cpp
-D:\Creations\PDCProj\dinoalert\Player.cpp(249,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Creations\PDCProj\dinoalert\Player.cpp(300,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\PDCProj\dinoalert\Player.cpp(300,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Powerups.cpp
-  ScreenMode.cpp
-  Generating Code...
-D:\Creations\PDCProj\dinoalert\Player.cpp(326): warning C4715: 'TURRET::displayturret': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\Player.cpp(244): warning C4715: 'PLAYER::playeralive': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\Player.cpp(297): warning C4715: 'TURRET::calculateangle': not all control paths return a value
-D:\Creations\PDCProj\dinoalert\Player.cpp(176): warning C4715: 'PLAYER::displayplayer': not all control paths return a value
+﻿  Enemy.cpp
 D:\Creations\PDCProj\dinoalert\Enemy.cpp(119): warning C4715: 'ENEMY::calculateangle': not all control paths return a value
 D:\Creations\PDCProj\dinoalert\Enemy.cpp(262): warning C4715: 'ENEMY::displayenemy': not all control paths return a value
   dinoalert.vcxproj -> D:\Creations\PDCProj\x64\Debug\dino_alert.exe

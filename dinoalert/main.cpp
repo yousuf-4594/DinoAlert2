@@ -10,12 +10,25 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "ScreenMode.h"
+#include <vector>
 
 
 
 using namespace std;
 
 
+/*
+Hello there!
+This project is made by:
+
+    Yousuf ahmed siddiqui   21K4594
+    Sufiyaan usmani         21k3239
+    Qasim hasan             21k3210
+
+    Section 5J
+
+Course: Parallel and Distributed Computing
+*/
 
 
 
@@ -40,12 +53,6 @@ void generate_powerup() {
 }
 
 
-
-
-
-
-
-
 void tile_spread(float bullet_x, float bullet_y) {
     if (Bullet::get_gun_type() == 4) {
         for (int i = 0; i < enemies.size(); i++) {
@@ -57,9 +64,25 @@ void tile_spread(float bullet_x, float bullet_y) {
 }
 
 
+void processBullet(int bulletIndex, Vector2 player, PLAYER& a) {
+    bullets[bulletIndex].move(bullets[bulletIndex].getcurrentvelocityx(), bullets[bulletIndex].getcurrentvelocityy());
 
-
-
+    // Out of bounds
+    if (bullets[bulletIndex].getx() < player.x - (2 * Bullet::getrange()) || bullets[bulletIndex].getx() > player.x + (2 * Bullet::getrange()) || bullets[bulletIndex].gety() < player.y - Bullet::getrange() || bullets[bulletIndex].gety() > player.y + Bullet::getrange()) {
+        bullets.erase(bullets.begin() + bulletIndex);
+    }
+    else {
+        // Enemy collision
+        for (int k = 0; k < enemies.size(); k++) {
+            if (CheckCollisionRecs(Rectangle{ bullets[bulletIndex].getx(),bullets[bulletIndex].gety(),7,7 }, Rectangle{ enemies[k].getx() , enemies[k].gety() , 60 , 60 })) {
+                tile_spread(bullets[bulletIndex].getx(), bullets[bulletIndex].gety());
+                bullets.erase(bullets.begin() + bulletIndex);
+                enemies[k].decreaselife(Bullet::get_gun_type());
+                break;
+            }
+        }
+    }
+}
 
 
 
@@ -88,32 +111,11 @@ void findbulletpath(Vector2 player, Vector2 mouse, PLAYER& a) {
             bullets.push_back(Bullet(b1));
         }
     }
+    #pragma omp parallel for
     for (int i = 0; i < bullets.size(); i++) {
-        bullets[i].move(bullets[i].getcurrentvelocityx(), bullets[i].getcurrentvelocityy());
-
-        //Out of bounds
-        if (bullets[i].getx() < player.x - (2 * Bullet::getrange()) || bullets[i].getx() > player.x + (2 * Bullet::getrange()) || bullets[i].gety() < player.y - Bullet::getrange() || bullets[i].gety() > player.y + Bullet::getrange()) {
-            bullets.erase(bullets.begin() + i);
-        }
-        else {
-            //Enemy collision
-            for (int k = 0; k < enemies.size(); k++) {
-                if (CheckCollisionRecs(Rectangle{ bullets[i].getx(),bullets[i].gety(),7,7 }, Rectangle{ enemies[k].getx() , enemies[k].gety() , 60 , 60 })) {
-                    tile_spread(bullets[i].getx(), bullets[i].gety());
-                    bullets.erase(bullets.begin() + i);
-                    //enemies.erase(enemies.begin() + k);
-                    enemies[k].decreaselife(Bullet::get_gun_type());
-
-
-
-                    break;
-                }
-                //if (enemies[k].allowtoerase() == true)
-                  //  enemies.erase(enemies.begin() + k);
-
-            }
-        }
+        processBullet(i, player, a);
     }
+    #pragma omp parallel for
     for (int k = 0; k < enemies.size(); k++) {
         if (enemies[k].allowtoerase() == true) {
             enemies[k].decenemycount();
@@ -335,7 +337,7 @@ int main() {
 
     Color player_color = RAYWHITE;
 
-    int enemy_count = 10;
+    int enemy_count = 100;
     ENEMY::setenemycount(enemy_count);
 
 
@@ -434,7 +436,7 @@ int main() {
             findbulletpath(Vector2{ player.getx(), player.gety() }, (GetScreenToWorld2D(GetMousePosition(), camera)), player);
 
             
-
+            #pragma omp parallel for
             for (int i = 0; i < enemies.size(); i++) {
                 enemies[i].moveenemy(player);
             }
@@ -474,27 +476,27 @@ int main() {
                 ENEMY::setenemyspeed(6.00);
             }
             else if (wavenumber >= 3) {
-                ENEMY::setenemyspeed(4.00);
+                ENEMY::setenemyspeed(4.00); 
             }
 
            //5120x2576
 
             BeginMode2D(camera);
 
-            DrawTexture(textures, -5120, 2576, WHITE);     //isometric   tileset
-            DrawTexture(textures, 0, 2576, WHITE);
-            DrawTexture(textures, -5120, 0, WHITE);
-            DrawTexture(textures, 0, 0, WHITE);
-
-            DrawTexture(textures, -2560, -1288, WHITE);
-            DrawTexture(textures, -2560, 1288, WHITE);
-            DrawTexture(textures, -2560, 3864, WHITE);
-            DrawTexture(textures, -7680, 1288, WHITE);
-            DrawTexture(textures, 2560, 1288, WHITE);
+            DrawTexture(textures, -2560, -1288, WHITE);                 //1    
+            DrawTexture(textures, -5120, -7, WHITE);                     //2+7
+            DrawTexture(textures, 0, -7, WHITE);                         //3+7
+            DrawTexture(textures, -7680, 1274, WHITE);                  //4+14
+            DrawTexture(textures, -2560, 1274, WHITE);                  //5+14
+            DrawTexture(textures, 2560, 1274, WHITE);                   //6+14
+            DrawTexture(textures, -5120, 2555, WHITE);                  //7+21
+            DrawTexture(textures, 0, 2555, WHITE);                      //8+21
+            DrawTexture(textures, -2560, 3836, WHITE);                  //9+28
 
 
             check_if_player_outof_bounds(player);
 
+            #pragma omp parallel for
             for (int i = 0; i < enemies.size(); i++) {
 
                 Rectangle enemyrectangle = enemies[i].displayenemy(player);
@@ -529,6 +531,7 @@ int main() {
                 screenmode.setscreenmode(4);
             }
 
+            #pragma omp parallel for
             for (int i = 0; i < Entity.size(); i++) {
                 Entity[i].drawpowerup(player_car);
             }
@@ -553,9 +556,9 @@ int main() {
 
             DrawTexture(hud, 0, 0, WHITE);
             player.displaylife(player_car);
-            player.display_score();
-            DrawText(TextFormat("wave number: %i",wavenumber), 1210 , 70 , 20, DARKBLUE);
-            DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 1210, 40, 20, RED);
+            player.display_score(); 
+            DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 1210 , 70 , 20, BLUE);
+            DrawText(TextFormat("wave number: %i", wavenumber), 1200, 40, 20, ORANGE);
             check_buymenu(player,acc,maxSpeed);
 
             Bullet::draw_gun(player_car);
