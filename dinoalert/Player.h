@@ -69,6 +69,7 @@ public:
     int getlife();
     void increase_life(int a);
     void decrease_score(int a);
+    Rectangle displayplayer(bool press, float angle, bool framelimit);
     Rectangle displayplayer(bool press, float angle);
     void showdirection();
     void offsets(float* offsetx, float* offsety);

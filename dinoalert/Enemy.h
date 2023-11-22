@@ -81,6 +81,7 @@ public:
     bool check_if_enemy_dead();
     static int get_enemy_count();
     float calculateangle(float playerx, float playery);
+    Rectangle displayenemy(PLAYER& player, bool framelimit);
     Rectangle displayenemy(PLAYER& player);
     void moveenemy(PLAYER& a);
     static void setenemycount(int a);

@@ -118,14 +118,16 @@ float ENEMY::calculateangle(float playerx, float playery) {
         return 360;
 }
 
-Rectangle ENEMY::displayenemy(PLAYER& player) {
+Rectangle ENEMY::displayenemy(PLAYER& player, bool framelimit) {
+
 
     angle = calculateangle(player.getx(), player.gety());
 
 
     if (is_enemy_dead == true) {
-
+        if (!framelimit)
         count[12]++;
+
         if (count[12] < 10)
             return enemydead_1;
         else if (count[12] < 20)
@@ -140,7 +142,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
     }
 
     else if (angle < 15 || angle >345) {
-        count[0]++;
+        if(!framelimit)
+            count[0]++;
+        
         if (count[0] < 10)
             return east_1;
         else if (count[0] < 20)
@@ -151,7 +155,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[0] = 0;
     }
     else if (angle < 45) {
+        if (!framelimit)
         count[1]++;
+
         if (count[1] < 10)
             return northeast_21;
         else if (count[1] < 20)
@@ -160,7 +166,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[1] = 0;
     }
     else if (angle < 75) {
+        if (!framelimit)
         count[2]++;
+
         if (count[2] < 10)
             return northeast_11;
         else if (count[2] < 20)
@@ -169,7 +177,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[2] = 0;
     }
     else if (angle < 105) {
+        if (!framelimit)
         count[3]++;
+
         if (count[3] < 10)
             return north_1;
         else if (count[3] < 20)
@@ -180,7 +190,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[3] = 0;
     }
     else if (angle < 135) {
+        if (!framelimit)
         count[4]++;
+
         if (count[4] < 10)
             return northwest_11;
         else if (count[4] < 20)
@@ -189,7 +201,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[4] = 0;
     }
     else if (angle < 165) {
+        if (!framelimit)
         count[5]++;
+
         if (count[5] < 10)
             return northwest_21;
         else if (count[5] < 20)
@@ -198,7 +212,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[5] = 0;
     }
     else if (angle < 195) {
+        if (!framelimit)
         count[6]++;
+
         if (count[6] < 10)
             return west_1;
         else if (count[6] < 20)
@@ -209,7 +225,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[6] = 0;
     }
     else if (angle < 225) {
+        if (!framelimit)
         count[7]++;
+
         if (count[7] < 10)
             return southwest_21;
         else if (count[7] < 20)
@@ -218,7 +236,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[7] = 0;
     }
     else if (angle < 255) {
+        if (!framelimit)
         count[8]++;
+
         if (count[8] < 10)
             return southwest_11;
         else if (count[8] < 20)
@@ -229,7 +249,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[8] = 0;
     }
     else if (angle < 285) {
+        if (!framelimit)
         count[9]++;
+
         if (count[9] < 10)
             return south_1;
         else if (count[9] < 20)
@@ -240,7 +262,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[9] = 0;
     }
     else if (angle < 315) {
+        if (!framelimit)
         count[10]++;
+
         if (count[10] < 10)
             return southeast_11;
         else if (count[10] < 20)
@@ -251,7 +275,9 @@ Rectangle ENEMY::displayenemy(PLAYER& player) {
             count[10] = 0;
     }
     else if (angle < 345) {
+        if (!framelimit)
         count[11]++;
+
         if (count[11] < 10)
             return southeast_21;
         else if (count[11] < 20)
@@ -271,8 +297,8 @@ void ENEMY::moveenemy(PLAYER& a) {
             minus.x = x - playerx;
             minus.y = y - playery;
             hyp(&minus.x, &minus.y);
-            x -= minus.x * enemyspeed;
-            y -= minus.y * enemyspeed;
+            x -= minus.x * enemyspeed * 50 * GetFrameTime();
+            y -= minus.y * enemyspeed * 50 * GetFrameTime();
         }
 
         else if (playerx < x && playery > y) {
@@ -280,8 +306,8 @@ void ENEMY::moveenemy(PLAYER& a) {
             minus.x = x - playerx;
             minus.y = playery - y;
             hyp(&minus.x, &minus.y);
-            x -= minus.x * enemyspeed;
-            y += minus.y * enemyspeed;
+            x -= minus.x * enemyspeed * 50 * GetFrameTime();
+            y += minus.y * enemyspeed * 50 * GetFrameTime();
         }
 
         else if (playerx > x && playery > y) {
@@ -289,8 +315,8 @@ void ENEMY::moveenemy(PLAYER& a) {
             minus.x = playerx - x;
             minus.y = playery - y;
             hyp(&minus.x, &minus.y);
-            x += minus.x * enemyspeed;
-            y += minus.y * enemyspeed;
+            x += minus.x * enemyspeed * 50 * GetFrameTime();
+            y += minus.y * enemyspeed * 50 * GetFrameTime();
         }
 
         else if (playerx > x && playery < y) {
@@ -298,20 +324,20 @@ void ENEMY::moveenemy(PLAYER& a) {
             minus.x = playerx - x;
             minus.y = y - playery;
             hyp(&minus.x, &minus.y);
-            x += minus.x * enemyspeed;
-            y -= minus.y * enemyspeed;
+            x += minus.x * enemyspeed * 50 * GetFrameTime();
+            y -= minus.y * enemyspeed * 50 * GetFrameTime();
         }
         else if (playerx == x && playery < y)
-            y -= enemyspeed;
+            y -= enemyspeed * 50 * GetFrameTime();
 
         else if (playerx == x && playery > y)
-            y += enemyspeed;
+            y += enemyspeed * 50 * GetFrameTime();
 
         else if (playery == y && playerx < x)
-            x -= enemyspeed;
+            x -= enemyspeed * 50 * GetFrameTime();
 
         else if (playery == y && playerx > x)
-            x += enemyspeed;
+            x += enemyspeed * 50 * GetFrameTime();
     }
 }
 

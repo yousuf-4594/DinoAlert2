@@ -88,8 +88,8 @@ void processBullet(int bulletIndex, Vector2 player, PLAYER& a) {
 
 
 void findbulletpath(Vector2 player, Vector2 mouse, PLAYER& a) {
-    static int count = 0;
-    count++;
+    static float count = 0;
+    count+= 1 * 50 * GetFrameTime();
 
 
     //blocks
@@ -103,13 +103,14 @@ void findbulletpath(Vector2 player, Vector2 mouse, PLAYER& a) {
     unitvector.y = aimdirection.y / (sqrt(pow(aimdirection.x, 2) + pow(aimdirection.y, 2)));
 
     //Shooting
-    if (count % Bullet::getfirerate() == 0) {
+    if (count - Bullet::getfirerate() >= 0) {
         if (IsKeyDown(KEY_SPACE)) {
             b1.setposition(player.x, player.y);
-            b1.setcurrentvelocity(unitvector.x * b1.getmaxspeed(), unitvector.y * b1.getmaxspeed());
+            b1.setcurrentvelocity(unitvector.x * b1.getmaxspeed() * 50 * GetFrameTime(), unitvector.y * b1.getmaxspeed() * 50 * GetFrameTime());
             Bullet::dec_ammo();
             bullets.push_back(Bullet(b1));
         }
+        count = 0;
     }
     #pragma omp parallel for
     for (int i = 0; i < bullets.size(); i++) {
@@ -131,7 +132,7 @@ void findbulletpath(Vector2 player, Vector2 mouse, PLAYER& a) {
 
 void displaybullet(float offsetx, float offsety, Texture2D bulletsprite) {
     for (int i = 0; i < bullets.size(); i++) {
-        DrawCircle(bullets[i].getx() + offsetx + 18, bullets[i].gety() + offsety + 8, 5, DARKBROWN);
+        DrawCircle(bullets[i].getx() + offsetx + 18, bullets[i].gety() + offsety + 8, 10, DARKBROWN);
     }
 
 }
@@ -366,6 +367,10 @@ void check_buymenu(PLAYER& player, float& acc, float& maxspeed) {
 }
 
 int main() {
+    int frameCounter = 0;
+    float frameAccumulator = 0;
+    int maxIterations = 17;
+
     int w = 1360, h = 765;
 
     int wavenumber = 1;
@@ -440,26 +445,26 @@ int main() {
                 #pragma omp parallel
                 {
                     if (IsKeyDown(KEY_W) && speed < maxSpeed) {
-                        if (speed < 0)  speed += dec;
-                        else  speed += acc;
+                        if (speed < 0)  speed += dec * 50 * GetFrameTime();
+                        else  speed += acc * 50 * GetFrameTime();
                     }
                     if (IsKeyDown(KEY_S) && speed > -maxSpeed) {
-                        if (speed > 0) speed -= dec;
-                        else  speed -= acc;
+                        if (speed > 0) speed -= dec * 50 * GetFrameTime();
+                        else  speed -= acc * 50 * GetFrameTime();
                     }
                     if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S)) {
-                        if (speed - dec > 0) speed -= dec;
-                        else if (speed + dec < 0) speed += dec;
+                        if (speed - dec > 0) speed -= dec * 50 * GetFrameTime();
+                        else if (speed + dec < 0) speed += dec * 50 * GetFrameTime();
                         else speed = 0;
                     }
                     if (IsKeyDown(KEY_D) && speed != 0) {
-                        angle += turnSpeed * speed / maxSpeed;
+                        angle += turnSpeed * 50 * GetFrameTime() * speed / maxSpeed;
                     }
                     if (IsKeyDown(KEY_A) && speed != 0) {
-                        angle -= turnSpeed * speed / maxSpeed;
+                        angle -= turnSpeed * 50 * GetFrameTime() * speed / maxSpeed;
                     }
-                    player.setx(player.getx() + sin(angle) * 1.2 * speed);
-                    player.sety(player.gety() - cos(angle) * speed);
+                    player.setx(player.getx() + sin(angle) * 1.2 * speed * 50 * GetFrameTime());
+                    player.sety(player.gety() - cos(angle) * speed * 50 * GetFrameTime());
 
                     Turretv.setx(player.getx());
                     Turretv.sety(player.gety());
@@ -533,12 +538,21 @@ int main() {
 
             check_if_player_outof_bounds(player);
 
-            #pragma omp for simd
-            for (int i = 0; i < enemies.size(); i++) {
-                Rectangle enemyrectangle = enemies[i].displayenemy(player);
-                DrawTextureRec(enemysprite, enemyrectangle, Vector2{ enemies[i].getx() , enemies[i].gety() }, WHITE);
-            }
 
+            if (GetFPS() % 2 && frameCounter <= maxIterations) {
+                #pragma omp for simd
+                for (int i = 0; i < enemies.size(); i++) {
+                    Rectangle enemyrectangle = enemies[i].displayenemy(player,true);
+                    DrawTextureRec(enemysprite, enemyrectangle, Vector2{ enemies[i].getx() , enemies[i].gety() }, WHITE);                    
+                }
+            }
+            else {
+                #pragma omp for simd
+                for (int i = 0; i < enemies.size(); i++) {
+                    Rectangle enemyrectangle = enemies[i].displayenemy(player, false);
+                    DrawTextureRec(enemysprite, enemyrectangle, Vector2{ enemies[i].getx() , enemies[i].gety() }, WHITE);
+                }
+            }
 
 
 
@@ -547,15 +561,27 @@ int main() {
             Rectangle turretloc = Turretv.displayturret(GetScreenToWorld2D(GetMousePosition(), camera));
 
 
+            
+            if (GetFPS() % 2 && frameCounter <= maxIterations) {
+                Rectangle playerrectangle = player.displayplayer((IsKeyDown(KEY_A) || IsKeyDown(KEY_D) || IsKeyDown(KEY_W) || IsKeyDown(KEY_S)), angleindegrees, true);
+                DrawTextureRec(player_car, playerrectangle, Vector2{ player.getx() , player.gety() }, WHITE);
+            }
+            else {
+                Rectangle playerrectangle = player.displayplayer((IsKeyDown(KEY_A) || IsKeyDown(KEY_D) || IsKeyDown(KEY_W) || IsKeyDown(KEY_S)), angleindegrees, false);
+                DrawTextureRec(player_car, playerrectangle, Vector2{ player.getx() , player.gety() }, WHITE);
+            }
 
 
-            Rectangle playerrectangle = player.displayplayer((IsKeyDown(KEY_A) || IsKeyDown(KEY_D) || IsKeyDown(KEY_W) || IsKeyDown(KEY_S)), angleindegrees);
+
+
+            if (GetFPS() % 2 && frameCounter <= maxIterations) {
+                frameCounter++;
+            }
 
 
             check_player_enemy_collision(player, player_color);
 
 
-            DrawTextureRec(player_car, playerrectangle, Vector2{ player.getx() , player.gety() }, WHITE);
 
 
 
@@ -581,11 +607,16 @@ int main() {
                 check_enemy_into_enemy_collision();
 
             check_power_player_collision(player);
+
+
             displaybullet(offsetx, offsety, player_car);
 
 
-            
+            frameAccumulator += GetFrameTime();
 
+            if (frameAccumulator >= 1) {
+                frameCounter = 0;
+            }
 
 
             EndMode2D();
@@ -598,7 +629,7 @@ int main() {
 
                 player.display_score();
 
-                DrawText(TextFormat("FPS: %f", 1 / GetFrameTime()), 1200, 13, 20, GREEN);
+                DrawText(TextFormat("FPS: %i", GetFPS()), 1200, 13, 20, GREEN);
 
                 DrawText(TextFormat("wave number: %i", wavenumber), 1200, 40, 20, ORANGE);
 

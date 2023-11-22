@@ -1,22 +1,22 @@
 ﻿  main.cpp
 D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(102,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(103,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(134,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(134,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(192,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(135,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(135,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(193,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(212,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(213,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(268,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(347,28): warning C4305: '+=': truncation from 'double' to 'float'
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(386,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(386,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(389,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(389,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(395,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(395,32): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(396,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(461,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(462,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(467,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(194,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(213,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(214,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(269,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(348,28): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(391,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(391,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(394,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(394,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(400,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(400,32): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(401,27): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(466,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(467,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Creations\UniversityProjects\PDCProj\dinoalert\main.cpp(472,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   dinoalert.vcxproj -> D:\Creations\UniversityProjects\PDCProj\x64\Debug\dino_alert.exe

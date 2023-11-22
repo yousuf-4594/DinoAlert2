@@ -60,11 +60,14 @@ void PLAYER::decrease_score(int a) {
     score -= a;
 }
 
-Rectangle PLAYER::displayplayer(bool press, float angle) {
+Rectangle PLAYER::displayplayer(bool press, float angle, bool framelimit) {
     if (press && playerlife > 0) {
         if (angle < 22.5 || angle>337.5) {
             playerdirection = 1;
+
+            if(!framelimit)
             count[2]++;
+            
             if (count[2] < 10)
                 return up_1;
             else if (count[2] < 20)
@@ -74,6 +77,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 67.5) {
             playerdirection = 2;
+            if (!framelimit)
             count[6]++;
             if (count[6] < 10)
                 return northeast_1;
@@ -86,6 +90,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 112.5) {
             playerdirection = 3;
+            if (!framelimit)
             count[1]++;
             if (count[1] < 10)
                 return east_1;
@@ -98,6 +103,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 157.5) {
             playerdirection = 4;
+            if (!framelimit)
             count[4]++;
             if (count[4] < 10)
                 return southeast_1;
@@ -110,6 +116,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 202.5) {
             playerdirection = 5;
+            if (!framelimit)
             count[3]++;
             if (count[3] < 10)
                 return down_1;
@@ -120,6 +127,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 247.5) {
             playerdirection = 6;
+            if (!framelimit)
             count[5]++;
             if (count[5] < 10)
                 return southwest_1;
@@ -132,6 +140,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 292.5) {
             playerdirection = 7;
+            if (!framelimit)
             count[0]++;
             if (count[0] < 10)
                 return west_1;
@@ -144,6 +153,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
         else if (angle < 337.5) {
             playerdirection = 8;
+            if (!framelimit)
             count[7]++;
             if (count[7] < 10)
                 return northwest_1;
@@ -157,6 +167,7 @@ Rectangle PLAYER::displayplayer(bool press, float angle) {
         }
     }
     else if (playerlife <= 0) {
+    if (!framelimit)
         count[8]++;
         if (count[8] < 10)
             return explosion_1;

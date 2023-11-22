@@ -42,3 +42,4 @@ player :dsaf			|score:2578
 player :dsf			|score:0
 player :dfsaf			|score:0
 player :fdsads			|score:1903
+player :dsafd			|score:2483
