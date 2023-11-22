@@ -30,7 +30,7 @@ This project is made by:
 Course: Parallel and Distributed Computing
 */
 
-
+float deltaTime;
 
 powerup entity;
 std::vector<powerup> Entity;
@@ -76,7 +76,7 @@ void processBullet(int bulletIndex, Vector2 player, PLAYER& a) {
         for (int k = 0; k < enemies.size(); k++) {
             if (CheckCollisionRecs(Rectangle{ bullets[bulletIndex].getx(),bullets[bulletIndex].gety(),7,7 }, Rectangle{ enemies[k].getx() , enemies[k].gety() , 60 , 60 })) {
                 tile_spread(bullets[bulletIndex].getx(), bullets[bulletIndex].gety());
-                bullets.erase(bullets.begin() + bulletIndex);
+                //bullets.erase(bullets.begin() + bulletIndex);
                 enemies[k].decreaselife(Bullet::get_gun_type());
                 break;
             }
@@ -138,15 +138,21 @@ void displaybullet(float offsetx, float offsety, Texture2D bulletsprite) {
 
 
 void check_player_enemy_collision(PLAYER& a, Color& color) {
+    #pragma omp parallel
+    {
+        // iteration of enemy vectors to determine player collision done parallely
+        #pragma omp taskloop num_tasks(enemies.size()/4)
+        for (int k = 0; k < enemies.size(); k++) {
 
-    for (int k = 0; k < enemies.size(); k++) {
-
-        if (CheckCollisionRecs(Rectangle{ enemies[k].getx(),enemies[k].gety(),60,60 }, Rectangle{ a.getx() , a.gety() , 100 , 90 })) {
-            color = RED;
-            a.decreaselife();
+            if (CheckCollisionRecs(Rectangle{ enemies[k].getx(),enemies[k].gety(),60,60 }, Rectangle{ a.getx() , a.gety() , 100 , 90 })) {                
+                color = RED;                
+                // player life decrement has to be done in a critical region
+                #pragma omp single
+                a.decreaselife();
+            }
+            else
+                color = WHITE;
         }
-        else
-            color = WHITE;
     }
 }
 
@@ -154,6 +160,7 @@ void check_player_enemy_collision(PLAYER& a, Color& color) {
 
 void check_power_player_collision(PLAYER player) {
     int i;
+    #pragma omp parallel for
     for (i = 0; i < Entity.size(); i++) {
         if (CheckCollisionRecs(Rectangle{ player.getx(),player.gety(),100,90 }, Rectangle{ (float)Entity[i].getx(),(float)Entity[i].gety(),21,15 })) {
             Entity.erase(Entity.begin() + i);
@@ -180,9 +187,10 @@ void check_power_player_collision(PLAYER player) {
 
 void populate_enemy() {
     int i;
+    #pragma omp parallel taskloop num_tasks(ENEMY::getenemycount())
     for (i = 0; i < ENEMY::getenemycount(); i++) {
         Enemy.setx(GetRandomValue(-1471, 1396));
-        Enemy.sety(GetRandomValue(-598, 530));
+        Enemy.sety(GetRandomValue(1274, 3834));
         enemies.push_back(Enemy);
     }
 
@@ -200,57 +208,80 @@ void initialise_the_game(PLAYER& player, int& wavenumber) {
     }
     wavenumber = 0;
     ENEMY::setenemycount(0);
+    ENEMY::setenemyspeed(2);
     player.setx(GetScreenWidth() / 2.0);
     player.sety(GetScreenHeight() / 2.0);
 }
 
 
 
+bool checkCollision(const Vector2& rect1, const Vector2& rect2, float width, float height) {
 
-
-
-
-
-void check_enemy_into_enemy_collision() {
-    int i, j;
-    for (i = 0; i < enemies.size(); i++) {
-        Vector2 enemy1 = { enemies[i].getx() ,enemies[i].gety() };
-        for (j = i + 1; j < enemies.size(); j++) {
-            Vector2 enemy2 = { enemies[j].getx(), enemies[j].gety() };
-            if (CheckCollisionRecs(Rectangle{ enemy1.x,enemy1.y , 40,40 }, Rectangle{ enemy2.x,enemy2.y ,40,40 })) {
-                int temp = GetRandomValue(1, 2);
-                int temp2 = GetRandomValue(1, 2);
-                if (temp == 1) {
-                    if (temp == 1) {
-                        enemies[i].setx(enemies[i].getx() + 1);
-                    }
-                    else {
-                        enemies[i].sety(enemies[i].gety() + 1);
-                    }
-                }
-                else {
-                    if (temp == 1) {
-                        enemies[i].setx(enemies[i].getx() - 1);
-                    }
-                    else {
-                        enemies[i].sety(enemies[i].gety() - 1);
-                    }
-                }
-
-            }
-
-        }
-
+    if (rect1.x + width < rect2.x || rect1.x > rect2.x + width ||
+        rect1.y + height < rect2.y || rect1.y > rect2.y + height) {
+        return false;
     }
+    return true;
+}
 
-
+void zupdatePosition(ENEMY& enemy) {
+    int temp = std::rand() % 2;
+    int temp2 = std::rand() % 2;
+ 
+    if (temp == 1) {
+        if (temp2 == 1) {
+            enemy.setx(enemy.getx() + 10);
+        }
+        else {
+            enemy.sety(enemy.gety() + 10);
+        }
+    }
+    else {
+        if (temp2 == 1) {
+            enemy.setx(enemy.getx() - 10);
+        }
+        else {
+            enemy.sety(enemy.gety() - 10);
+        }
+    }
 }
 
 
+void checkCollisionRecursive(std::vector<ENEMY>& enemies, int start, int end) {
+    if (start >= end) {
+        return;
+    }
+    Vector2 pos1 = { enemies[start].getx(), enemies[start].gety() };
+
+    for (int j = start + 1; j <= end; j++) {
+        Vector2 pos2 = { enemies[j].getx(), enemies[j].gety() };
+
+        if (checkCollision(pos1, pos2, 80, 80)) {
+            zupdatePosition(enemies[start]);
+        }
+    }
+    checkCollisionRecursive(enemies, start + 1, end);
+}
 
 
+void check_enemy_into_enemy_collision() {
+    int size = enemies.size();
+    int quarter1 = size / 4;
+    int quarter2 = size / 2;
+    int quarter3 = 3 * size / 4;
 
-
+    #pragma omp parallel
+    {
+        #pragma omp task
+        checkCollisionRecursive(enemies, 0, quarter1 - 1);
+        #pragma omp task
+        checkCollisionRecursive(enemies, quarter1, quarter2 - 1);
+        #pragma omp task
+        checkCollisionRecursive(enemies, quarter2, quarter3 - 1);
+        #pragma omp task
+        checkCollisionRecursive(enemies, quarter3, size - 1);
+    }
+}
 
 
 void check_if_player_outof_bounds(PLAYER& player) {
@@ -293,39 +324,43 @@ void check_buymenu(PLAYER& player, float& acc, float& maxspeed) {
     DrawText("++TOP SPEED 50k", 1270, 451, 3, YELLOW);
     DrawText("++DEATH BRINGER 200k", 1240, 524, 3, YELLOW);
 
-    if (CheckCollisionPointRec(GetMousePosition(), health) && player.getlife() < 200 && player.get_score() >= 20) {
-        DrawText("++HEALTH 20k", 1290, 235, 3, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            player.increase_life(40);
-            player.decrease_score(20);
+
+    #pragma omp parallel
+    {
+        if (CheckCollisionPointRec(GetMousePosition(), health) && player.getlife() < 200 && player.get_score() >= 20) {
+            DrawText("++HEALTH 20k", 1290, 235, 3, RED);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                player.increase_life(40);
+                player.decrease_score(20);
+            }
         }
-    }
-    if (CheckCollisionPointRec(GetMousePosition(), ammo) && player.get_score() >= 30) {
-        DrawText("++AMMO 30k", 1290, 308, 3, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            Bullet::increaseammo();
-            player.decrease_score(30);
+        if (CheckCollisionPointRec(GetMousePosition(), ammo) && player.get_score() >= 30) {
+            DrawText("++AMMO 30k", 1290, 308, 3, RED);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                Bullet::increaseammo();
+                player.decrease_score(30);
+            }
         }
-    }
-    if (CheckCollisionPointRec(GetMousePosition(), acceleration) && player.get_score() >= 50) {
-        DrawText("++ACCELERATION 50k", 1250, 380, 3, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            acc += 0.02;
-            player.decrease_score(50);
+        if (CheckCollisionPointRec(GetMousePosition(), acceleration) && player.get_score() >= 50) {
+            DrawText("++ACCELERATION 50k", 1250, 380, 3, RED);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                acc += 0.02;
+                player.decrease_score(50);
+            }
         }
-    }
-    if (CheckCollisionPointRec(GetMousePosition(), topspeed) && player.get_score() >= 50) {
-        DrawText("++TOP SPEED 50k", 1270, 451, 3, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            maxspeed += 2.00;
-            player.decrease_score(50);
+        if (CheckCollisionPointRec(GetMousePosition(), topspeed) && player.get_score() >= 50) {
+            DrawText("++TOP SPEED 50k", 1270, 451, 3, RED);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                maxspeed += 2.00;
+                player.decrease_score(50);
+            }
         }
-    }
-    if (CheckCollisionPointRec(GetMousePosition(), deathbringer) && player.get_score() >= 200 && Bullet::check_if_deathbringer_onn() == false) {
-        DrawText("++DEATH BRINGER 200k", 1240, 524, 3, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            Bullet::ondeathbringer();
-            player.decrease_score(200);
+        if (CheckCollisionPointRec(GetMousePosition(), deathbringer) && player.get_score() >= 200 && Bullet::check_if_deathbringer_onn() == false) {
+            DrawText("++DEATH BRINGER 200k", 1240, 524, 3, RED);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                Bullet::ondeathbringer();
+                player.decrease_score(200);
+            }
         }
     }
 }
@@ -337,7 +372,7 @@ int main() {
 
     Color player_color = RAYWHITE;
 
-    int enemy_count = 100;
+    int enemy_count = 2500;
     ENEMY::setenemycount(enemy_count);
 
 
@@ -345,11 +380,11 @@ int main() {
 
     float offsetx = 0.00, offsety = 0.00;
 
-    int i=0,temp=0;
+    int i=0,temp=0,counter=0;
 
 
     PLAYER player(w/2, h/2);
-
+    Bullet::setguntype(4);
 
     TURRET Turretv(w/2 , h/2);
     //PROJECTILE projectile;
@@ -363,8 +398,8 @@ int main() {
 
     populate_enemy();
 
-    InitWindow(w, h, "yousuf ");
-    cout << "fdsafsfafafsdsdfdsafs";
+    InitWindow(w, h, "DinoAlert");
+    
     
     //----------------------------------------------------------------   TEXTURES   ---------------------------------------
     Texture2D textures,player_car,enemysprite,intro,hud,bg;
@@ -380,7 +415,7 @@ int main() {
     SCREENMODE screenmode;
 
 
-    SetTargetFPS(60);
+    SetTargetFPS(360);
 
 
     Camera2D camera = { 0 };
@@ -393,7 +428,6 @@ int main() {
     //ToggleFullscreen();
 
     while (!WindowShouldClose()) {
-
         
         if (screenmode.getscreenmode() == 0) {
             initialise_the_game(player, wavenumber);
@@ -403,40 +437,41 @@ int main() {
         if (screenmode.getscreenmode() == 1) {
 
             if (player.playeralive()) {
+                #pragma omp parallel
+                {
+                    if (IsKeyDown(KEY_W) && speed < maxSpeed) {
+                        if (speed < 0)  speed += dec;
+                        else  speed += acc;
+                    }
+                    if (IsKeyDown(KEY_S) && speed > -maxSpeed) {
+                        if (speed > 0) speed -= dec;
+                        else  speed -= acc;
+                    }
+                    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S)) {
+                        if (speed - dec > 0) speed -= dec;
+                        else if (speed + dec < 0) speed += dec;
+                        else speed = 0;
+                    }
+                    if (IsKeyDown(KEY_D) && speed != 0) {
+                        angle += turnSpeed * speed / maxSpeed;
+                    }
+                    if (IsKeyDown(KEY_A) && speed != 0) {
+                        angle -= turnSpeed * speed / maxSpeed;
+                    }
+                    player.setx(player.getx() + sin(angle) * 1.2 * speed);
+                    player.sety(player.gety() - cos(angle) * speed);
 
-                if (IsKeyDown(KEY_W) && speed < maxSpeed) {
-                    if (speed < 0)  speed += dec;
-                    else  speed += acc;
-                }
-                if (IsKeyDown(KEY_S) && speed > -maxSpeed) {
-                    if (speed > 0) speed -= dec;
-                    else  speed -= acc;
-                }
-                if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S)) {
-                    if (speed - dec > 0) speed -= dec;
-                    else if (speed + dec < 0) speed += dec;
-                    else speed = 0;
-                }
-                if (IsKeyDown(KEY_D) && speed != 0) {
-                    angle += turnSpeed * speed / maxSpeed;
-                }
-                if (IsKeyDown(KEY_A) && speed != 0) {
-                    angle -= turnSpeed * speed / maxSpeed;
-                }
-                player.setx(player.getx() + sin(angle) * 1.2 * speed);
-                player.sety(player.gety() - cos(angle) * speed);
+                    Turretv.setx(player.getx());
+                    Turretv.sety(player.gety());
 
-                Turretv.setx(player.getx());
-                Turretv.sety(player.gety());
-
-                angleindegrees = fmod(((angle * 630) / 11), 360);
-
+                    angleindegrees = fmod(((angle * 630) / 11), 360);
+                }
             }
 
             findbulletpath(Vector2{ player.getx(), player.gety() }, (GetScreenToWorld2D(GetMousePosition(), camera)), player);
 
             
-            #pragma omp parallel for
+            #pragma omp for simd
             for (int i = 0; i < enemies.size(); i++) {
                 enemies[i].moveenemy(player);
             }
@@ -448,8 +483,8 @@ int main() {
             camera.zoom += ((float)GetMouseWheelMove() * 0.05f);            //
             if (camera.zoom > 3.0f)                                         //
                 camera.zoom = 3.0f;                                         //
-            else if (camera.zoom < 0.0f)                                    //
-                camera.zoom = 0.0f;                                        //  CAMERA
+            else if (camera.zoom <= 0.1f)                                    //
+                camera.zoom = 0.1f;                                        //  CAMERA
 
 
 
@@ -483,22 +518,23 @@ int main() {
 
             BeginMode2D(camera);
 
-            DrawTexture(textures, -2560, -1288, WHITE);                 //1    
-            DrawTexture(textures, -5120, -7, WHITE);                     //2+7
-            DrawTexture(textures, 0, -7, WHITE);                         //3+7
-            DrawTexture(textures, -7680, 1274, WHITE);                  //4+14
-            DrawTexture(textures, -2560, 1274, WHITE);                  //5+14
-            DrawTexture(textures, 2560, 1274, WHITE);                   //6+14
-            DrawTexture(textures, -5120, 2555, WHITE);                  //7+21
-            DrawTexture(textures, 0, 2555, WHITE);                      //8+21
-            DrawTexture(textures, -2560, 3836, WHITE);                  //9+28
-
+            #pragma omp parallel num_threads(9)
+            {
+                DrawTexture(textures, -2560, -1288, WHITE);                 //1    
+                DrawTexture(textures, -5120, -7, WHITE);                     //2+7
+                DrawTexture(textures, 0, -7, WHITE);                         //3+7
+                DrawTexture(textures, -7680, 1274, WHITE);                  //4+14
+                DrawTexture(textures, -2560, 1274, WHITE);                  //5+14
+                DrawTexture(textures, 2560, 1274, WHITE);                   //6+14
+                DrawTexture(textures, -5120, 2555, WHITE);                  //7+21
+                DrawTexture(textures, 0, 2555, WHITE);                      //8+21
+                DrawTexture(textures, -2560, 3836, WHITE);                  //9+28
+            }
 
             check_if_player_outof_bounds(player);
 
-            #pragma omp parallel for
+            #pragma omp for simd
             for (int i = 0; i < enemies.size(); i++) {
-
                 Rectangle enemyrectangle = enemies[i].displayenemy(player);
                 DrawTextureRec(enemysprite, enemyrectangle, Vector2{ enemies[i].getx() , enemies[i].gety() }, WHITE);
             }
@@ -531,20 +567,20 @@ int main() {
                 screenmode.setscreenmode(4);
             }
 
-            #pragma omp parallel for
-            for (int i = 0; i < Entity.size(); i++) {
-                Entity[i].drawpowerup(player_car);
+            #pragma omp parallel
+            {
+                #pragma omp for
+                for (int i = 0; i < Entity.size(); i++) {
+                    Entity[i].drawpowerup(player_car);
+                }
             }
-
-            check_enemy_into_enemy_collision();
-
-            check_power_player_collision(player);
 
             Bullet::checkammo();
 
-            generate_powerup();
-            powerup::clock_up();
+            if(enemies.size()>enemy_count*0.05)
+                check_enemy_into_enemy_collision();
 
+            check_power_player_collision(player);
             displaybullet(offsetx, offsety, player_car);
 
 
@@ -554,25 +590,37 @@ int main() {
 
             EndMode2D();
 
-            DrawTexture(hud, 0, 0, WHITE);
-            player.displaylife(player_car);
-            player.display_score(); 
-            DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 1210 , 70 , 20, BLUE);
-            DrawText(TextFormat("wave number: %i", wavenumber), 1200, 40, 20, ORANGE);
-            check_buymenu(player,acc,maxSpeed);
+            #pragma omp parallel num_of_threads(8)
+            {
+                DrawTexture(hud, 0, 0, WHITE);
 
-            Bullet::draw_gun(player_car);
+                player.displaylife(player_car);
+
+                player.display_score();
+
+                DrawText(TextFormat("FPS: %f", 1 / GetFrameTime()), 1200, 13, 20, GREEN);
+
+                DrawText(TextFormat("wave number: %i", wavenumber), 1200, 40, 20, ORANGE);
+
+                DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 1210, 70, 20, BLUE);
+
+                check_buymenu(player, acc, maxSpeed);
+
+                Bullet::draw_gun(player_car);
+            }
 
             if (ENEMY::getenemycount() <= 0) {
                 wavenumber++;
-                ENEMY::setenemycount(enemy_count*wavenumber);
+                if(enemy_count * wavenumber >= 2500)
+                    ENEMY::setenemycount(2500);
+                else
+                    ENEMY::setenemycount(enemy_count*wavenumber);
                 populate_enemy();
+                counter = 1;
             }
 
-
-
+            cout << "\nFps:" << 1 / GetFrameTime();
         }
-
 
         EndDrawing();
     }

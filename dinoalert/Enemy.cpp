@@ -26,7 +26,7 @@ void hyp(float* a, float* b) {
 
 
 int ENEMY::enemycount;
-float ENEMY::enemyspeed = 4;
+float ENEMY::enemyspeed = 2;
 
 ENEMY::ENEMY() {
 

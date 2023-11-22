@@ -101,7 +101,7 @@ void Bullet::setguntype(int a) {
         maxSpeed = 50.0;
         range = 4000;
         firerate = 60;
-        ammo = 5 + addon[3];
+        ammo = 5000 + addon[3];
     }
     if (gun == 5) {
         maxSpeed = 50.0;
