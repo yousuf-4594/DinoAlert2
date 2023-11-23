@@ -315,45 +315,45 @@ void check_buymenu(PLAYER& player, float& acc, float& maxspeed) {
     Rectangle topspeed = { 1294,401,69,69 };
     Rectangle deathbringer = { 1294,474,69,69 };
 
-    DrawText("++HEALTH 20k", 1290, 235, 3, YELLOW);
-    DrawText("++AMMO 30k", 1290, 308, 3, YELLOW);
-    DrawText("++ACCELERATION 50k", 1250, 380, 3, YELLOW);
-    DrawText("++TOP SPEED 50k", 1270, 451, 3, YELLOW);
-    DrawText("++DEATH BRINGER 200k", 1240, 524, 3, YELLOW);
+    DrawText("++HEALTH 20k", 1090, 235, 3, YELLOW);
+    DrawText("++AMMO 30k", 1090, 308, 3, YELLOW);
+    DrawText("++ACCELERATION 50k", 1050, 380, 3, YELLOW);
+    DrawText("++TOP SPEED 50k", 1070, 451, 3, YELLOW);
+    DrawText("++DEATH BRINGER 200k", 1040, 524, 3, YELLOW);
 
 
     //#pragma omp parallel
     {
         if (CheckCollisionPointRec(GetMousePosition(), health) && player.getlife() < 200 && player.get_score() >= 20) {
-            DrawText("++HEALTH 20k", 1290, 235, 3, RED);
+            DrawText("++HEALTH 20k", 1090, 235, 3, RED);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 player.increase_life(40);
                 player.decrease_score(20);
             }
         }
         else if (CheckCollisionPointRec(GetMousePosition(), ammo) && player.get_score() >= 30) {
-            DrawText("++AMMO 30k", 1290, 308, 3, RED);
+            DrawText("++AMMO 30k", 1090, 308, 3, RED);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 Bullet::increaseammo();
                 player.decrease_score(30);
             }
         }
         else if (CheckCollisionPointRec(GetMousePosition(), acceleration) && player.get_score() >= 50) {
-            DrawText("++ACCELERATION 50k", 1250, 380, 3, RED);
+            DrawText("++ACCELERATION 50k", 1050, 380, 3, RED);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 acc += 0.02;
                 player.decrease_score(50);
             }
         }
         else if (CheckCollisionPointRec(GetMousePosition(), topspeed) && player.get_score() >= 50) {
-            DrawText("++TOP SPEED 50k", 1270, 451, 3, RED);
+            DrawText("++TOP SPEED 50k", 1070, 451, 3, RED);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 maxspeed += 2.00;
                 player.decrease_score(50);
             }
         }
         else if (CheckCollisionPointRec(GetMousePosition(), deathbringer) && player.get_score() >= 200 && Bullet::check_if_deathbringer_onn() == false) {
-            DrawText("++DEATH BRINGER 200k", 1240, 524, 3, RED);
+            DrawText("++DEATH BRINGER 200k", 1040, 524, 3, RED);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 Bullet::ondeathbringer();
                 player.decrease_score(200);
@@ -370,7 +370,7 @@ int main() {
     float frameAccumulator = 0;
     int maxIterations = 1;
 
-    int w = 1360, h = 765;
+    int w = 1160, h = 765;
 
     int wavenumber = 1;
 
@@ -673,15 +673,15 @@ int main() {
                 }
                 #pragma omp section
                 {
-                    DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 1170, 15, 20, BLACK); 
+                    DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 970, 15, 20, BLACK); 
                 }
                 #pragma omp section
                 {
-                    DrawText(TextFormat("wave number: %i", wavenumber), 1200, 40, 20, ORANGE); 
+                    DrawText(TextFormat("wave number: %i", wavenumber), 1000, 40, 20, ORANGE); 
                 }
                 #pragma omp section
                 {
-                    DrawText(TextFormat("FPS: %i", GetFPS()), 1210, 70, 20, GREEN); 
+                    DrawText(TextFormat("FPS: %i", GetFPS()), 1010, 70, 20, GREEN); 
                 }
                 #pragma omp section
                 {
