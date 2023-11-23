@@ -62,8 +62,10 @@ void tile_spread(float bullet_x, float bullet_y) {
     if (Bullet::get_gun_type() == 4) {
         #pragma omp parallel for num_threads(8)
         for (int i = 0; i < enemies.size(); i++) {
-            /*if (analytics)*/
-                //cout << "\nTile spread thread:" << omp_get_thread_num();
+            if (analytics) {
+                cout << "\nTile spread Total Threads:" << omp_get_num_threads();
+                cout << "\nTile spread Thread #" << omp_get_thread_num();
+            }
             if (CheckCollisionCircleRec(Vector2{ bullet_x,bullet_y }, 50, Rectangle{ enemies[i].getx(),enemies[i].gety(),60,60 })) {
                 enemies[i].decreaselife(4);
             }
@@ -128,7 +130,6 @@ void findbulletpath(Vector2 player, Vector2 mouse, PLAYER& a) {
             enemies[k].decenemycount();
             enemies.erase(enemies.begin() + k);
             a.increase_score();
-
         }
     }
 }
@@ -145,6 +146,10 @@ void displaybullet(float offsetx, float offsety, Texture2D bulletsprite) {
 void check_player_enemy_collision(PLAYER& a, Color& color) {
     #pragma omp parallel for num_threads(3)
     for (int k = 0; k < enemies.size(); k++) {
+        if (analytics) {
+            std::cout << "\nPLAYER-ENEMY Collision Total threads" << omp_get_num_threads();
+            std::cout << "\nPLAYER-ENEMY Collision Thread #" << omp_get_thread_num();
+        }
         if (CheckCollisionRecs(Rectangle{ enemies[k].getx(),enemies[k].gety(),60,60 }, Rectangle{ a.getx() , a.gety() , 100 , 90 })) {                
             color = RED;                
             // player life decrement has to be done in a critical region
@@ -162,6 +167,10 @@ void check_power_player_collision(PLAYER player) {
     int i;
     #pragma omp parallel for
     for (i = 0; i < Entity.size(); i++) {
+        if (analytics) {
+            std::cout << "\nPLAYER-POWERUP Collision Total threads" << omp_get_num_threads();
+            std::cout << "\nPLAYER-POWERUP Collision Thread #" << omp_get_thread_num();
+        }
         if (CheckCollisionRecs(Rectangle{ player.getx(),player.gety(),100,90 }, Rectangle{ (float)Entity[i].getx(),(float)Entity[i].gety(),21,15 })) {
             Entity.erase(Entity.begin() + i);
             if (Bullet::check_if_deathbringer_onn())
@@ -187,10 +196,16 @@ void check_power_player_collision(PLAYER player) {
 
 void populate_enemy() {
     int i;
-    #pragma omp for
+    #pragma omp parallel for
     for (i = 0; i < ENEMY::getenemycount(); i++) {
+        if (analytics) {
+            std::cout << "\nEnemy Inits Total threads:" << omp_get_num_threads();
+            std::cout << "\nEnemy Inits Thread #" << omp_get_thread_num();
+        }        
         Enemy.setx(GetRandomValue(-2071, 1996));
         Enemy.sety(GetRandomValue(1274, 3834));
+        
+        #pragma omp critical
         enemies.push_back(Enemy);
     }
 }
@@ -273,9 +288,10 @@ void check_enemy_into_enemy_collision() {
 
     #pragma omp parallel for num_threads(4)
     for (int i = 1; i <= 4; i++) {
-        /*if (analytics)
-            cout << "\nEnemy-Enemy collision threads" << omp_get_thread_num();*/
-        
+        if (analytics) {
+            std::cout << "\nENEMY-ENEMY collision Total threads" << omp_get_num_threads();
+            std::cout << "\nENEMY-ENEMY collision thread #" << omp_get_thread_num();
+        }
         checkCollisionRecursive(enemies, arr[i - 1], arr[i] - 1);
     }
 }
@@ -376,7 +392,7 @@ int main() {
 
     Color player_color = RAYWHITE;
 
-    int enemy_count = 4500;
+    int enemy_count = 30;
     ENEMY::setenemycount(enemy_count);
 
 
@@ -407,6 +423,7 @@ int main() {
     
     //----------------------------------------------------------------   TEXTURES   ---------------------------------------
     Texture2D textures[9], player_car, enemysprite, intro, hud, bg;
+    
     textures[0] = LoadTexture("./Assets/map1.png");
     textures[1] = LoadTexture("./Assets/map2.png");
     textures[2] = LoadTexture("./Assets/map3.png");
@@ -421,7 +438,7 @@ int main() {
     intro = LoadTexture("./Assets/intro.png");
     hud = LoadTexture("./Assets/hud.png");
     bg = LoadTexture("./Assets/background.png");
-
+    
     //---------------------------------------------------------------------------------------------------------------------
 
     SCREENMODE screenmode;
@@ -440,6 +457,8 @@ int main() {
     //ToggleFullscreen();
 
     while (!WindowShouldClose()) {
+
+        std::cout << "\n\n\n\n\n\nGameLoop()--------------------";
         
         if (screenmode.getscreenmode() == 0) {
             initialise_the_game(player, wavenumber);
@@ -488,9 +507,10 @@ int main() {
             
             #pragma omp parallel for num_threads(8)
             for (int i = 0; i < enemies.size(); i++) {
-               /* if(analytics)
-                    cout << "\nEnemies movement thread: "<<omp_get_thread_num();*/
-
+                if (analytics) {
+                    std::cout << "\nEnemies movement Total Threads:" << omp_get_num_threads();
+                    std::cout << "\nEnemies movement thread #" << omp_get_thread_num();
+                }
                 enemies[i].moveenemy(player);
             }
 
@@ -536,41 +556,43 @@ int main() {
 
             BeginMode2D(camera);
 
-            #pragma omp sections
+            #pragma omp parallel
             {
-                /*if (analytics) {
-                    cout << "\nMap display Total Threads : " << omp_get_num_threads();
-                    cout << "\nMap display Thread Number: " << omp_get_thread_num();
-                }*/
-                #pragma omp section
+                if (analytics) {
+                    cout << "\nGame Map Total Threads: " << omp_get_num_threads();
+                    cout << "\nGame Map Thread #" << omp_get_thread_num();
+                }
+                #pragma omp single
                 DrawTexture(textures[0], -2560, -1288, WHITE);                 //1    
                 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[1], -5120, -7, WHITE);                     //2+7
         
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[2], 0, -7, WHITE);                         //3+7
 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[3], -7680, 1274, WHITE);                  //4+14
 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[4], -2560, 1274, WHITE);                  //5+14
 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[5], 2560, 1274, WHITE);                   //6+14
 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[6], -5120, 2555, WHITE);                  //7+21
 
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[7], 0, 2555, WHITE);                      //8+21
     
-                #pragma omp section
+                #pragma omp single
                 DrawTexture(textures[8], -2560, 3836, WHITE);                  //9+28
+
+                #pragma omp master
+                check_if_player_outof_bounds(player);
             }
 
-            check_if_player_outof_bounds(player);
 
 
             if (GetFPS() % GetFPS()/2 && frameCounter <= maxIterations) {
@@ -627,10 +649,14 @@ int main() {
                 screenmode.setscreenmode(4);
             }
 
-            #pragma omp parallel
+            //#pragma omp parallel 
             {
-                #pragma omp for
+                #pragma omp parallel for num_threads(3)
                 for (int i = 0; i < Entity.size(); i++) {
+                    if (analytics) {
+                        cout << "POWERUP management Total Threads: " << omp_get_thread_num();
+                        cout << "POWERUP management Thread #" << omp_get_thread_num();
+                    }
                     Entity[i].drawpowerup(player_car);
                 }
             }
@@ -655,35 +681,37 @@ int main() {
 
             EndMode2D();
 
-            #pragma omp sections
+            #pragma omp parallel
             {
-                /*if (analytics)
-                    cout << "\nHUD threads:" << omp_get_thread_num();*/
-                #pragma omp section
+                if (analytics) {
+                    cout << "\nHUD total threads " << omp_get_num_threads();
+                    cout << "\nHUD thread #" << omp_get_thread_num();
+                }
+                #pragma omp single
                 {
                     DrawTexture(hud, 0, 0, WHITE); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     player.displaylife(player_car); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     player.display_score(); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     DrawText(TextFormat("dino alive : %i", ENEMY::getenemycount()), 970, 15, 20, BLACK); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     DrawText(TextFormat("wave number: %i", wavenumber), 1000, 40, 20, ORANGE); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     DrawText(TextFormat("FPS: %i", GetFPS()), 1010, 70, 20, GREEN); 
                 }
-                #pragma omp section
+                #pragma omp single
                 {
                     Bullet::draw_gun(player_car); 
                 }

@@ -245,7 +245,7 @@ void PLAYER::displaylife(Texture2D lifesprite) {
 }
 
 void PLAYER::display_score() {
-    DrawText(TextFormat("kill count : %i ", score), 1100, 700, 15, ORANGE);
+    DrawText(TextFormat("kill count : %i ", score), 900, 700, 15, ORANGE);
 }
 
 bool PLAYER::playeralive() {
