@@ -125,7 +125,7 @@ Rectangle ENEMY::displayenemy(PLAYER& player, bool framelimit) {
 
 
     if (is_enemy_dead == true) {
-        if (!framelimit)
+        //if (!framelimit)
         count[12]++;
 
         if (count[12] < 10)

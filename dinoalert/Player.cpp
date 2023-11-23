@@ -229,13 +229,13 @@ void PLAYER::offsets(float* offsetx, float* offsety) {
 
 void PLAYER::displaylife(Texture2D lifesprite) {
     int i, gap = 220;
-    #pragma omp for
+    //#pragma omp parallel for
     for (i = 0; i <= 20; i++) {
         DrawTextureRec(lifesprite, Rectangle{ 378,656,21,41 }, Vector2{ (float)gap , 709.00 }, WHITE);
         gap += 23;
     }
     gap = 220;
-    #pragma omp for
+    //#pragma omp parallel for
     for (i = 0; i <= playerlife / 10; i++) {
         DrawTextureRec(lifesprite, life, Vector2{ (float)gap , 697.00 }, WHITE);
         gap += 23;
@@ -286,96 +286,78 @@ void TURRET::sety(float a) {
 float TURRET::calculateangle(int mousex, int mousey) {
     float result = 0.0;
 
-    #pragma omp parallel sections
-    {
-        #pragma omp section
-        {
-            if (mousex > x && mousey < y)  // 1st quadrant
-                result = (630.0 / 11.0) * (atan((y - mousey) / (mousex - x)));
-        }
-        #pragma omp section
-        {
-            if (mousex < x && mousey < y)  // 2nd quadrant
-            result = 180.0 - ((630.0 / 11.0) * (atan((y - mousey) / (x - mousex))));
-        }
-        #pragma omp section
-        {
-            if (mousex < x && mousey > y)  // 3rd quadrant
-            result = 180.0 + ((630.0 / 11.0) * (atan((mousey - y) / (x - mousex))));
-        }
-        #pragma omp section
-        {
-            if (mousex > x && mousey > y)  // 4th quadrant
-            result = 360.0 - ((630.0 / 11.0) * (atan((mousey - y) / (mousex - x))));
-        }
-        #pragma omp section
-        {
-            if (mousex == x && mousey < y)
-            result = 90.0;
-        }
-        #pragma omp section
-        {
-            if (mousex < x && mousey == y)
-            result = 180.0;
-        }
-        #pragma omp section
-        {
-            if (mousex == x && mousey > y)
-            result = 270.0;
-        }
-        #pragma omp section
-        {
-            if (mousex > x && mousey == y)
-            result = 360.0;
-        }
-    }
+    if (mousex > x && mousey < y)  // 1st quadrant
+        result = (630.0 / 11.0) * (atan((y - mousey) / (mousex - x)));
+       
+    else if (mousex < x && mousey < y)  // 2nd quadrant
+    result = 180.0 - ((630.0 / 11.0) * (atan((y - mousey) / (x - mousex))));
+       
+    else if (mousex < x && mousey > y)  // 3rd quadrant
+    result = 180.0 + ((630.0 / 11.0) * (atan((mousey - y) / (x - mousex))));
+       
+    else if (mousex > x && mousey > y)  // 4th quadrant
+    result = 360.0 - ((630.0 / 11.0) * (atan((mousey - y) / (mousex - x))));
+       
+    else if (mousex == x && mousey < y)
+    result = 90.0;
+        
+    else if (mousex < x && mousey == y)
+    result = 180.0;
+        
+    else if (mousex == x && mousey > y)
+    result = 270.0;
+        
+    else if (mousex > x && mousey == y)
+    result = 360.0;
+        
+    
     return result;
 }
 
 Rectangle TURRET::displayturret(Vector2 mouse) {
     angle = calculateangle(mouse.x, mouse.y);
-    #pragma omp parallel sections
+    /*#pragma omp parallel sections
     {
         #pragma omp section
-        {
+        {*/
             if (angle < 22.5)
                 return east;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 67.5)
             return northeast;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 112.5)
             return up;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 157.5)
             return northwest;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 202.5)
             return west;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 247.5)
             return southwest;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 292.5)
             return down;
-        }
+        /*}
         #pragma omp section
-        {
+        {*/
             if (angle < 337.5)
             return southeast;
-        }
-    }
+        //}
+    //}
     return up;
 }

@@ -43,3 +43,8 @@ player :dsf			|score:0
 player :dfsaf			|score:0
 player :fdsads			|score:1903
 player :dsafd			|score:2483
+player :dsfddsa			|score:0
+player :dfsa			|score:0
+player :dsfad			|score:0
+player :dsaf			|score:0
+player :daf			|score:0
